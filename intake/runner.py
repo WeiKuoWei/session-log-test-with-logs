@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from .models import ExtractionError
 from .redact import redact
 from .routing import SERVICE_DESK, route
-from .settings import settings_fingerprint
+from .settings import retry_command, settings_fingerprint
 from .validate import validate_reply
 
 RENDER_EVERY = 25
@@ -29,9 +29,11 @@ def decide(current, source_sha256, fingerprint, policy_version, force):
     return "reuse"
 
 
-def run_intake(files, store, settings, provider, schema, policy_version, force=frozenset()):
+def run_intake(files, store, settings, provider, schema, policy_version, configured_provider,
+               force=frozenset()):
     """Process every file. Returns {document_id: action} where action is one of
-    extracted, rerouted, reused, busy."""
+    extracted, rerouted, reused, busy. `configured_provider` is the provider named in
+    config/settings.json; it decides whether a retry command needs --provider."""
     fingerprint = settings_fingerprint(settings, schema)
     outcomes = {}
     finished = 0
@@ -39,7 +41,7 @@ def run_intake(files, store, settings, provider, schema, policy_version, force=f
     try:
         futures = [
             pool.submit(_process, path, store, settings, provider, schema, fingerprint,
-                        policy_version, path.name in force)
+                        policy_version, configured_provider, path.name in force)
             for path in files
         ]
         for future in as_completed(futures):
@@ -54,7 +56,8 @@ def run_intake(files, store, settings, provider, schema, policy_version, force=f
     return outcomes
 
 
-def _process(path, store, settings, provider, schema, fingerprint, policy_version, force):
+def _process(path, store, settings, provider, schema, fingerprint, policy_version,
+             configured_provider, force):
     document_id = path.name
     raw = path.read_bytes()
     sha = hashlib.sha256(raw).hexdigest()
@@ -74,7 +77,7 @@ def _process(path, store, settings, provider, schema, fingerprint, policy_versio
             record = _rerouted_record(base, current, raw)
             store.save_attempt(record)
             return document_id, "rerouted"
-        store.save_attempt(_extract_record(base, raw, provider, schema))
+        store.save_attempt(_extract_record(base, raw, provider, schema, configured_provider))
         return document_id, "extracted"
 
 
@@ -99,15 +102,16 @@ def _base_record(document_id, sha, fingerprint, policy_version, provider):
     }
 
 
-def _extract_record(record, raw, provider, schema):
+def _extract_record(record, raw, provider, schema, configured_provider):
     document_id = record["document_id"]
     try:
         message = read_message(raw)
         extraction = validate_reply(provider.extract(document_id, message), message, schema)
     except ExtractionError as exc:
-        return _failed(record, exc.code, redact(exc.message))
+        return _failed(record, exc.code, redact(exc.message), configured_provider)
     except Exception as exc:  # provider or SDK failure of any kind
-        return _failed(record, "provider-error", f"{type(exc).__name__}: {redact(str(exc))}")
+        return _failed(record, "provider-error", f"{type(exc).__name__}: {redact(str(exc))}",
+                       configured_provider)
     return _routed(record, extraction, message)
 
 
@@ -130,11 +134,11 @@ def _routed(record, extraction, message):
     return record
 
 
-def _failed(record, code, message):
+def _failed(record, code, message, configured_provider):
     record["error"] = {
         "code": code,
         "message": message,
-        "retry_command": f"python3 -m intake retry {record['document_id']}",
+        "retry_command": retry_command(record["document_id"], record["provider"], configured_provider),
     }
     return record
 

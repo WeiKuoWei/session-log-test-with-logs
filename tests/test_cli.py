@@ -1,5 +1,5 @@
-import hashlib
 import json
+import shlex
 
 import pytest
 
@@ -7,7 +7,7 @@ import intake.settings as settings_module
 from helpers import REPO
 from intake.cli import main
 from intake.providers import RESPONSE_CASES
-from intake.settings import policy_version
+from intake.settings import policy_version, retry_command
 
 
 def run_mock(workspace, *args):
@@ -53,7 +53,7 @@ def test_status_lists_failed_pending_and_changed_documents_with_reasons(workspac
     out = output_of(capsys, ["status", "--provider", "mock"], workspace)
     assert "FAILED  IT-003.json" in out
     assert "provider-error: No canned mock reply for IT-003.json." in out
-    assert "retry: python3 -m intake retry IT-003.json" in out
+    assert "retry: python3 -m intake retry IT-003.json --provider mock\n" in out
     assert "STALE   IT-001.json" in out and "source file changed since attempt 1" in out
     assert "PENDING IT-099.json" in out and "no result yet" in out
     assert "summary: 18 done, 1 failed, 1 pending, 1 stale" in out
@@ -66,6 +66,43 @@ def test_status_shows_the_older_result_kept_behind_a_failed_retry(workspace, cap
     out = output_of(capsys, ["status", "--provider", "mock"], workspace)
     assert "older result kept: attempt 1" in out and "Security Review" in out
     assert "history IT-002.json" in out
+
+
+def printed_retry_command(text):
+    (line,) = [l for l in text.splitlines() if l.strip().startswith("retry: ")]
+    return line.split("retry: ", 1)[1]
+
+
+def test_the_printed_retry_command_works_word_for_word(workspace, capsys, monkeypatch):
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    good_reply = (workspace.mock_replies_dir / "IT-013.json").read_text()
+    (workspace.mock_replies_dir / "IT-013.json").write_text(
+        json.dumps({"stop_reason": "refusal", "tool_inputs": []}))
+    capsys.readouterr()
+    assert run_mock(workspace) == 1
+    from_run = printed_retry_command(capsys.readouterr().out)
+    from_status = printed_retry_command(output_of(capsys, ["status", "--provider", "mock"], workspace))
+    assert from_run == from_status == "python3 -m intake retry IT-013.json --provider mock"
+
+    # the command without the provider is what used to be printed: it needs a key
+    with pytest.raises(SystemExit, match="ANTHROPIC_API_KEY"):
+        main(["retry", "IT-013.json"], paths=workspace)
+
+    (workspace.mock_replies_dir / "IT-013.json").write_text(good_reply)
+    prefix = "python3 -m intake "
+    assert from_run.startswith(prefix)
+    assert main(shlex.split(from_run[len(prefix):]), paths=workspace) == 0
+    assert workspace_current(workspace, "IT-013.json")["status"] == "review"
+
+
+def test_retry_command_names_the_provider_only_when_it_is_not_the_configured_one():
+    assert retry_command("IT-001.json", "anthropic", "anthropic") == "python3 -m intake retry IT-001.json"
+    assert retry_command("IT-001.json", "mock", "anthropic") == (
+        "python3 -m intake retry IT-001.json --provider mock")
+
+
+def workspace_current(workspace, name):
+    return json.loads((workspace.state_dir / "current" / name).read_text())
 
 
 def test_editing_the_policy_text_reroutes_everything_without_the_model(workspace, capsys):

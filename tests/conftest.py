@@ -13,6 +13,9 @@ def workspace(tmp_path):
     shutil.copytree(MATERIALS, tmp_path / "materials" / "requests")
     shutil.copytree(REPO / "mock_replies", tmp_path / "mock_replies")
     shutil.copy(MATERIALS.parent / "office-policy.md", tmp_path / "materials" / "office-policy.md")
+    shutil.copytree(REPO / "expected", tmp_path / "expected")
+    shutil.copytree(REPO / "tests" / "fixtures" / "paraphrase",
+                    tmp_path / "tests" / "fixtures" / "paraphrase")
     return Paths(root=tmp_path)
 
 

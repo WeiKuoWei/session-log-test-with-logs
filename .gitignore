@@ -1,4 +1,4 @@
 __pycache__/
 .pytest_cache/
-state/claims/
-state/render.lock
+state/**/claims/
+state/**/render.lock

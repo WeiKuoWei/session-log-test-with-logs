@@ -81,7 +81,7 @@ def run_one(workspace, store, settings, schema, outcome):
     client = FakeClient(outcome)
     provider = AnthropicProvider(settings, schema, client)
     run_intake(input_files(workspace.input_dir), store, settings, provider, schema, "policy-1",
-               force=frozenset({DOC}))
+               "anthropic", force=frozenset({DOC}))
     return client
 
 

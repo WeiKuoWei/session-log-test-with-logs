@@ -4,10 +4,11 @@ import hashlib
 import json
 from collections import Counter
 
+from .accuracy import measure, mock_labels, render_report, summary_lines
 from .evidence import build_evidence
 from .providers import make_provider
 from .runner import decide, input_files, read_message, run_intake
-from .settings import (Paths, load_schema, load_settings, policy_version,
+from .settings import (Paths, load_schema, load_settings, policy_version, retry_command,
                        settings_fingerprint)
 from .store import Store, atomic_write
 
@@ -18,6 +19,7 @@ def main(argv=None, paths=None):
     paths = paths or Paths()
     args = _parser().parse_args(argv)
     settings = load_settings()
+    configured = settings.provider
     if args.provider:
         settings = dataclasses.replace(settings, provider=args.provider)
     store = Store(paths)
@@ -27,10 +29,12 @@ def main(argv=None, paths=None):
     if args.command == "history":
         return _show_history(store, args.document)
     if args.command == "status":
-        return _show_status(store, settings, paths)
+        return _show_status(store, settings, paths, configured)
     if args.command == "evidence":
         return _write_evidence(settings, paths, args.document)
-    return _run(store, settings, paths, args)
+    if args.command == "accuracy":
+        return _accuracy(store, settings, paths, configured)
+    return _run(store, settings, paths, args, configured)
 
 
 def _parser():
@@ -53,13 +57,16 @@ def _parser():
     queue.add_argument("--owner")
     history = sub.add_parser("history", help="list every attempt for one document")
     history.add_argument("document", metavar="IT-001.json")
+    sub.add_parser("accuracy", parents=[common],
+                   help="compare current extractions with expected/expected_fields.json "
+                        "and write deliverables/accuracy.md")
     evidence = sub.add_parser("evidence", parents=[common],
                               help="write deliverables/request-evidence.json for one document")
     evidence.add_argument("document", nargs="?", default="IT-001.json", metavar="IT-001.json")
     return parser
 
 
-def _run(store, settings, paths, args):
+def _run(store, settings, paths, args, configured):
     schema = load_schema()
     provider = make_provider(settings, paths, schema)
     files = input_files(paths.input_dir)
@@ -72,12 +79,13 @@ def _run(store, settings, paths, args):
             raise SystemExit(f"Not found in {paths.input_dir}: {', '.join(sorted(unknown))}")
     source = "from --provider" if args.provider else "from config/settings.json"
     print(f"provider: {settings.provider} ({source}), model: {provider.model}, documents: {len(files)}")
-    outcomes = run_intake(files, store, settings, provider, schema, policy_version(paths), force)
+    outcomes = run_intake(files, store, settings, provider, schema, policy_version(paths),
+                          configured, force)
     print("outcomes: " + ", ".join(f"{n} {a}" for a, n in sorted(Counter(outcomes.values()).items())))
     failed = [r for r in store.all_current() if r["status"] == "error"]
     for record in failed:
         print(f"FAILED {record['document_id']}: {record['error']['code']} - "
-              f"{record['error']['message']}\n  retry: {record['error']['retry_command']}")
+              f"{record['error']['message']}\n  retry: {_retry_for(record, configured)}")
     print(f"wrote {paths.deliverables_dir}/extractions.jsonl and queue.json")
     return 1 if failed else 0
 
@@ -110,7 +118,12 @@ def _show_history(store, document_id):
     return 0
 
 
-def _show_status(store, settings, paths):
+def _retry_for(record, configured):
+    """Recomputed at display time: the configured provider may have changed since the attempt."""
+    return retry_command(record["document_id"], record["provider"], configured)
+
+
+def _show_status(store, settings, paths, configured):
     schema = load_schema()
     fingerprint = settings_fingerprint(settings, schema)
     policy = policy_version(paths)
@@ -118,7 +131,7 @@ def _show_status(store, settings, paths):
     for path in input_files(paths.input_dir):
         sha = hashlib.sha256(path.read_bytes()).hexdigest()
         current = store.load_current(path.name)
-        kind, lines = _classify(current, sha, fingerprint, policy, settings)
+        kind, lines = _classify(current, sha, fingerprint, policy, settings, configured)
         counts[kind] += 1
         if kind != "done":
             print(f"{kind.upper():<8}{path.name}")
@@ -128,13 +141,13 @@ def _show_status(store, settings, paths):
     return 0
 
 
-def _classify(current, sha, fingerprint, policy, settings):
+def _classify(current, sha, fingerprint, policy, settings, configured):
     """Return (kind, reason lines) where kind is done, pending, failed or stale."""
     if current is None:
         return "pending", ["no result yet", "run: python3 -m intake run"]
     if current["status"] == "error":
         error = current["error"]
-        lines = [f"{error['code']}: {error['message']}", f"retry: {error['retry_command']}"]
+        lines = [f"{error['code']}: {error['message']}", f"retry: {_retry_for(current, configured)}"]
         if current["last_valid"]:
             old = current["last_valid"]
             lines.append(f"older result kept: attempt {old['attempt']}, source {old['source_sha256'][:12]}, "
@@ -166,5 +179,21 @@ def _write_evidence(settings, paths, document_id):
     evidence = build_evidence(settings, load_schema(), document_id, read_message(path.read_bytes()))
     target = paths.deliverables_dir / "request-evidence.json"
     atomic_write(target, json.dumps(evidence, indent=2, ensure_ascii=False) + "\n")
+    print(f"wrote {target}")
+    return 0
+
+
+def _accuracy(store, settings, paths, configured):
+    """Process the paraphrase into its own store, then measure all 21 documents."""
+    schema = load_schema()
+    provider = make_provider(settings, paths, schema)
+    paraphrase_store = Store(paths, scope="paraphrase")
+    run_intake(input_files(paths.paraphrase_dir), paraphrase_store, settings, provider, schema,
+               policy_version(paths), configured)
+    result = measure(paths, store, paraphrase_store)
+    report = render_report(result, settings, policy_version(paths), mock_labels(paths.mock_replies_dir))
+    target = paths.deliverables_dir / "accuracy.md"
+    atomic_write(target, report)
+    print("\n".join(summary_lines(result)))
     print(f"wrote {target}")
     return 0

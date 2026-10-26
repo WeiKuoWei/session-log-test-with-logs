@@ -33,11 +33,15 @@ def atomic_write(path, text):
 
 
 class Store:
-    def __init__(self, paths):
+    def __init__(self, paths, scope=None):
+        """`scope` names a separate store under state/ (the accuracy paraphrase), which renders
+        into its own folder and never touches deliverables/."""
         self.paths = paths
-        self.current_dir = paths.state_dir / "current"
-        self.history_dir = paths.state_dir / "history"
-        self.claims_dir = paths.state_dir / "claims"
+        self.state_dir = paths.state_dir / scope if scope else paths.state_dir
+        self.output_dir = self.state_dir / "rendered" if scope else paths.deliverables_dir
+        self.current_dir = self.state_dir / "current"
+        self.history_dir = self.state_dir / "history"
+        self.claims_dir = self.state_dir / "claims"
         for directory in (self.current_dir, self.history_dir, self.claims_dir):
             directory.mkdir(parents=True, exist_ok=True)
 
@@ -91,9 +95,9 @@ class Store:
 
     def render(self):
         """Rebuild the two deliverable views from state/current under a global lock."""
-        out = self.paths.deliverables_dir
+        out = self.output_dir
         out.mkdir(parents=True, exist_ok=True)
-        with open(self.paths.state_dir / "render.lock", "a") as lock:
+        with open(self.state_dir / "render.lock", "a") as lock:
             fcntl.flock(lock, fcntl.LOCK_EX)
             records = self.all_current()
             lines = [json.dumps(r, ensure_ascii=False) for r in records]

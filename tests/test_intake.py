@@ -9,8 +9,9 @@ from intake.models import ExtractionError, ProviderReply
 from intake.runner import input_files, run_intake
 
 
-def run(inbox, store, settings, provider, schema, policy="policy-1", **kwargs):
-    return run_intake(input_files(inbox), store, settings, provider, schema, policy, **kwargs)
+def run(inbox, store, settings, provider, schema, policy="policy-1", configured="mock", **kwargs):
+    return run_intake(input_files(inbox), store, settings, provider, schema, policy, configured,
+                      **kwargs)
 
 
 def setup_docs(inbox, *names):
@@ -215,7 +216,8 @@ def test_resume_after_a_partial_run_processes_only_the_remainder(
     names = [f"IT-0{n}.json" for n in range(10, 16)]
     setup_docs(inbox, *names)
     provider = ScriptedProvider(all_good_replies(names))
-    run_intake([inbox / n for n in names[:3]], store, settings, provider, schema, "policy-1")
+    run_intake([inbox / n for n in names[:3]], store, settings, provider, schema, "policy-1",
+               "mock")
     outcomes = run(inbox, store, settings, provider, schema)
     assert Counter(outcomes.values()) == {"reused": 3, "extracted": 3}
     assert sorted(provider.calls) == names

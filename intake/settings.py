@@ -30,6 +30,10 @@ class Paths:
         return self.root / "deliverables"
 
     @property
+    def paraphrase_dir(self):
+        return self.root / "tests" / "fixtures" / "paraphrase"
+
+    @property
     def policy_file(self):
         return self.root / "materials" / "office-policy.md"
 
@@ -84,3 +88,10 @@ def policy_version(paths):
     Editing either one makes stored routes stale, and `run` re-routes them without the model."""
     digest = hashlib.sha256(paths.policy_file.read_bytes()).hexdigest()
     return f"rules-{ROUTING_REVISION}+policy-{digest[:12]}"
+
+
+def retry_command(document_id, provider, configured_provider):
+    """The command that retries one document with the provider that made the failed attempt.
+    --provider is added only when that provider is not the one in config/settings.json."""
+    flag = f" --provider {provider}" if provider != configured_provider else ""
+    return f"python3 -m intake retry {document_id}{flag}"
