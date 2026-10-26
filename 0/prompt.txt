@@ -1,0 +1,11 @@
+Checked: 106 passed. In a fresh scratch copy I forced the IT-013 refusal again; the printed command now ends in `--provider mock`, and running it word for word with no key set recovered the document (20 done). accuracy.md reads well.
+
+Small fix: "business_purpose present and found in the message 21/21" also counts IT-005 and IT-017, where no purpose is expected. Split it into two lines (present and found: 19/19, null where absent: 2/2) so each number means what its label says.
+
+One test gap: test_resume_after_a_partial_run only processes 3 docs first, it never interrupts a run. Add a test where the provider raises KeyboardInterrupt partway through a batch: the finished docs keep their records, no lock is left held, deliverables include the finished ones, and a rerun processes only the rest.
+
+Then step 5 part 2, and we're close to done:
+1. deliverables/verification.md: each command, what it asserts and what it compares against; observed results labelled mock or fake client; the repairs from this session (conflict prefix and model override signal, status reasons and the --provider position, policy version derived from the file, the retry command's provider flag, the purpose split); operating limits (the two-operator test is two threads in one process, flock needs a local filesystem, no live call, no load test). Add a short "Who did what" section: the coding agent (Claude Code on Sonnet) wrote the code, tests, mock replies, expected file and documents; I set scope and acceptance checks, chose provider/model/output format and the file-based design, decided what to leave out (web UI, database, live run, a real multi-process race), set the IT-009 route and the business_purpose rule up front, caught the issues listed under repairs, and checked the 220 expected values, hashes, quotes and the operator flow in a scratch copy myself.
+2. README.md for the next operator: setup with a venv and requirements.txt, supported runtime / provider / model, the env var name, exact run / status / queue / history / retry / accuracy / evidence / test commands, how to read the queue and retry a failure, and the workload, shared-operation and interruption assumptions with their limits. Move the original task text to docs/task.md unchanged.
+
+Run pytest and accuracy, show me the counts, commit.
