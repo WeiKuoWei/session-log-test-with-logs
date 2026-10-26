@@ -1,0 +1,38 @@
+{
+  "document_id": "IT-013.json",
+  "source_sha256": "e477b1b1ecabb5f445dd80703e532a7ac11247220861a09f550f374dcdea240f",
+  "extraction": {
+    "request_id": "IT-013",
+    "request_date": "2026-10-22",
+    "kind": "new",
+    "requester": "Emma Wilson",
+    "team": "Compliance",
+    "system": "Beacon",
+    "environment": "production",
+    "permission": "read",
+    "business_purpose": "review account activity records to help with internal audit we have scheduled",
+    "start_date": "2026-10-28",
+    "end_date": "2026-10-30",
+    "manager": "Elena Park",
+    "supporting_quotes": [
+      "This is Emma Wilson from Compliance",
+      "new access to Beacon for reading in production",
+      "from 2026-10-28 to 2026-10-30",
+      "My manager is Elena Park"
+    ],
+    "issues": []
+  },
+  "status": "review",
+  "owner": "Security Review",
+  "next_action": "review-risk-then-owner",
+  "error": null,
+  "attempt": 2,
+  "attempted_at": "2026-10-26T11:07:01+00:00",
+  "provider": "mock",
+  "model": "mock",
+  "settings_fingerprint": "f0a3b1eb9adcb2af9d538b3c2b748406043a749194046fb288e03005a88cfc05",
+  "policy_version": "rules-1+policy-b949596765ae",
+  "routing_signals": [],
+  "rerouted_from_attempt": null,
+  "last_valid": null
+}

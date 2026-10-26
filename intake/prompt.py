@@ -1,4 +1,5 @@
 TOOL_NAME = "record_access_request"
+TOOL_CHOICE = {"type": "tool", "name": TOOL_NAME, "disable_parallel_tool_use": True}
 
 SYSTEM_PROMPT = """\
 You extract structured facts from one IT access-request message for Northstar Labs. \

@@ -1,0 +1,38 @@
+{
+  "document_id": "IT-018.json",
+  "source_sha256": "0f4735183084c428b92ba37fc4247b8792222daff9395ab3feb94b866a8de1bd",
+  "extraction": {
+    "request_id": "IT-018",
+    "request_date": "2026-10-22",
+    "kind": "new",
+    "requester": "Daniel Wright",
+    "team": "Data Engineering",
+    "system": "Atlas",
+    "environment": "staging",
+    "permission": "read",
+    "business_purpose": "reviewing our sample dataset we use during our weekly analyst workshop",
+    "start_date": "2026-10-27",
+    "end_date": "2026-10-27",
+    "manager": "Priya Shah",
+    "supporting_quotes": [
+      "Daniel Wright in Data Engineering",
+      "IT-018, submitted on 2026-10-22",
+      "new read access to Atlas in staging for the dates 2026-10-27 through 2026-11-03",
+      "My manager is Priya Shah."
+    ],
+    "issues": []
+  },
+  "status": "review",
+  "owner": "System Owner",
+  "next_action": "review-request",
+  "error": null,
+  "attempt": 2,
+  "attempted_at": "2026-10-26T11:07:01+00:00",
+  "provider": "mock",
+  "model": "mock",
+  "settings_fingerprint": "f0a3b1eb9adcb2af9d538b3c2b748406043a749194046fb288e03005a88cfc05",
+  "policy_version": "rules-1+policy-b949596765ae",
+  "routing_signals": [],
+  "rerouted_from_attempt": null,
+  "last_valid": null
+}

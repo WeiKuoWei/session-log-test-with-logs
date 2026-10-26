@@ -9,8 +9,8 @@ from intake.models import ExtractionError, ProviderReply
 from intake.runner import input_files, run_intake
 
 
-def run(inbox, store, settings, provider, schema, **kwargs):
-    return run_intake(input_files(inbox), store, settings, provider, schema, **kwargs)
+def run(inbox, store, settings, provider, schema, policy="policy-1", **kwargs):
+    return run_intake(input_files(inbox), store, settings, provider, schema, policy, **kwargs)
 
 
 def setup_docs(inbox, *names):
@@ -199,8 +199,8 @@ def test_changed_policy_version_reroutes_without_calling_the_model(
     setup_docs(inbox, "IT-001.json")
     provider = ScriptedProvider(all_good_replies(["IT-001.json"]))
     run(inbox, store, settings, provider, schema)
-    newer = dataclasses.replace(settings, policy_version="policy-2")
-    assert run(inbox, store, newer, provider, schema) == {"IT-001.json": "rerouted"}
+    assert run(inbox, store, settings, provider, schema, policy="policy-2") == {
+        "IT-001.json": "rerouted"}
     assert len(provider.calls) == 1
     record = current(store, "IT-001.json")
     assert record["policy_version"] == "policy-2" and record["rerouted_from_attempt"] == 1
@@ -215,7 +215,7 @@ def test_resume_after_a_partial_run_processes_only_the_remainder(
     names = [f"IT-0{n}.json" for n in range(10, 16)]
     setup_docs(inbox, *names)
     provider = ScriptedProvider(all_good_replies(names))
-    run_intake([inbox / n for n in names[:3]], store, settings, provider, schema)
+    run_intake([inbox / n for n in names[:3]], store, settings, provider, schema, "policy-1")
     outcomes = run(inbox, store, settings, provider, schema)
     assert Counter(outcomes.values()) == {"reused": 3, "extracted": 3}
     assert sorted(provider.calls) == names

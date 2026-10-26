@@ -1,0 +1,37 @@
+{
+  "document_id": "IT-007.json",
+  "source_sha256": "dd4857323b83b418755981031c2798cd95c83703d09aa5457e3c8105afba646e",
+  "extraction": {
+    "request_id": "IT-007",
+    "request_date": "2026-10-22",
+    "kind": "change",
+    "requester": "Grace Tan",
+    "team": "Developer Experience",
+    "system": "Forge",
+    "environment": "staging",
+    "permission": "write",
+    "business_purpose": "We're updating starter project templates, so i want to save our changes for the templates",
+    "start_date": "2026-10-24",
+    "end_date": "2026-10-28",
+    "manager": "Nia Patel",
+    "supporting_quotes": [
+      "IT-007 2026-10-22 - Grace Tan / Developer Experience",
+      "I have current (read only) access to Forge (staging) and would like to transition to (write) from 2026-10-24 to 2026-10-28",
+      "My manager is Nia Patel"
+    ],
+    "issues": []
+  },
+  "status": "review",
+  "owner": "Security Review",
+  "next_action": "review-risk-then-owner",
+  "error": null,
+  "attempt": 2,
+  "attempted_at": "2026-10-26T11:07:01+00:00",
+  "provider": "mock",
+  "model": "mock",
+  "settings_fingerprint": "f0a3b1eb9adcb2af9d538b3c2b748406043a749194046fb288e03005a88cfc05",
+  "policy_version": "rules-1+policy-b949596765ae",
+  "routing_signals": [],
+  "rerouted_from_attempt": null,
+  "last_valid": null
+}

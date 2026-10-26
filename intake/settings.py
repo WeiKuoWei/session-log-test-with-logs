@@ -3,7 +3,8 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
-from .prompt import SYSTEM_PROMPT, TOOL_NAME
+from .prompt import SYSTEM_PROMPT, TOOL_CHOICE, TOOL_NAME
+from .routing import ROUTING_REVISION
 
 ROOT = Path(__file__).resolve().parent.parent
 SCHEMA_PATH = ROOT / "snapshot.schema.json"
@@ -29,6 +30,10 @@ class Paths:
         return self.root / "deliverables"
 
     @property
+    def policy_file(self):
+        return self.root / "materials" / "office-policy.md"
+
+    @property
     def mock_replies_dir(self):
         return self.root / "mock_replies"
 
@@ -45,7 +50,6 @@ class Settings:
     workers: int
     timeout_seconds: float
     max_retries: int
-    policy_version: str
 
 
 def load_settings(path=CONFIG_PATH):
@@ -68,7 +72,15 @@ def settings_fingerprint(settings, schema):
         "max_tokens": settings.max_tokens,
         "prompt": SYSTEM_PROMPT,
         "tool": TOOL_NAME,
+        "tool_choice": TOOL_CHOICE,
         "schema": schema,
     }
     blob = json.dumps(payload, sort_keys=True, ensure_ascii=False).encode("utf-8")
     return hashlib.sha256(blob).hexdigest()
+
+
+def policy_version(paths):
+    """Identify the routing policy: the rules-revision constant plus a hash of the policy text.
+    Editing either one makes stored routes stale, and `run` re-routes them without the model."""
+    digest = hashlib.sha256(paths.policy_file.read_bytes()).hexdigest()
+    return f"rules-{ROUTING_REVISION}+policy-{digest[:12]}"

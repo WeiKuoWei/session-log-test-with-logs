@@ -1,0 +1,41 @@
+{
+  "document_id": "IT-016.json",
+  "source_sha256": "4c470e6fc498eba6b02efd4fcb9e4550b5e6229c608b20d7ceb2e529cd6282c2",
+  "extraction": {
+    "request_id": "IT-061",
+    "request_date": "2026-10-22",
+    "kind": "new",
+    "requester": "Alex Turner",
+    "team": "Platform",
+    "system": "Forge",
+    "environment": "staging",
+    "permission": "read",
+    "business_purpose": "looking at the example pipeline runs to figure out why the starter project takes longer to build some of the time",
+    "start_date": "2026-10-26",
+    "end_date": "2026-10-28",
+    "manager": "Nia Patel",
+    "supporting_quotes": [
+      "Alex Turner from Platform submitting request IT-061 for 2026-10-22",
+      "new read access to Forge (staging) for the dates 2026-10-26 through 2026-10-28",
+      "Nia Patel is my manager"
+    ],
+    "issues": [
+      "id-mismatch: the message states IT-061 but the file is IT-016"
+    ]
+  },
+  "status": "needs-information",
+  "owner": "IT Service Desk",
+  "next_action": "clarify",
+  "error": null,
+  "attempt": 2,
+  "attempted_at": "2026-10-26T11:07:01+00:00",
+  "provider": "mock",
+  "model": "mock",
+  "settings_fingerprint": "f0a3b1eb9adcb2af9d538b3c2b748406043a749194046fb288e03005a88cfc05",
+  "policy_version": "rules-1+policy-b949596765ae",
+  "routing_signals": [
+    "id-mismatch"
+  ],
+  "rerouted_from_attempt": null,
+  "last_valid": null
+}

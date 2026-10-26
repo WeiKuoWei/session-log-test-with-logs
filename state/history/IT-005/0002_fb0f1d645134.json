@@ -1,0 +1,45 @@
+{
+  "document_id": "IT-005.json",
+  "source_sha256": "fb0f1d6451346e0d411204cb82375ae6f3be26e2791996d6adb5550d969c20f1",
+  "extraction": {
+    "request_id": "IT-005",
+    "request_date": "2026-10-22",
+    "kind": "withdrawal",
+    "requester": "Ava Brooks",
+    "team": "Design",
+    "system": null,
+    "environment": null,
+    "permission": null,
+    "business_purpose": null,
+    "start_date": null,
+    "end_date": null,
+    "manager": "Elena Park",
+    "supporting_quotes": [
+      "Could you please withdraw IT-005? Date: 2026-10-22",
+      "My name is Ava Brooks. Design.",
+      "My boss is Elena Park.",
+      "Please record the request as withdrawn"
+    ],
+    "issues": [
+      "system: not stated in the withdrawal",
+      "environment: not stated in the withdrawal",
+      "permission: not stated in the withdrawal",
+      "start_date: not stated in the withdrawal",
+      "end_date: not stated in the withdrawal",
+      "business_purpose: no access purpose is given, only the reason for withdrawing"
+    ]
+  },
+  "status": "review",
+  "owner": "IT Service Desk",
+  "next_action": "confirm-withdrawal",
+  "error": null,
+  "attempt": 2,
+  "attempted_at": "2026-10-26T11:07:01+00:00",
+  "provider": "mock",
+  "model": "mock",
+  "settings_fingerprint": "f0a3b1eb9adcb2af9d538b3c2b748406043a749194046fb288e03005a88cfc05",
+  "policy_version": "rules-1+policy-b949596765ae",
+  "routing_signals": [],
+  "rerouted_from_attempt": null,
+  "last_valid": null
+}

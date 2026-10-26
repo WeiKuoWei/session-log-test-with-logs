@@ -2,12 +2,11 @@
 
 import hashlib
 import json
-import os
-import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 
 from .models import ExtractionError
+from .redact import redact
 from .routing import SERVICE_DESK, route
 from .settings import settings_fingerprint
 from .validate import validate_reply
@@ -30,7 +29,7 @@ def decide(current, source_sha256, fingerprint, policy_version, force):
     return "reuse"
 
 
-def run_intake(files, store, settings, provider, schema, force=frozenset()):
+def run_intake(files, store, settings, provider, schema, policy_version, force=frozenset()):
     """Process every file. Returns {document_id: action} where action is one of
     extracted, rerouted, reused, busy."""
     fingerprint = settings_fingerprint(settings, schema)
@@ -40,7 +39,7 @@ def run_intake(files, store, settings, provider, schema, force=frozenset()):
     try:
         futures = [
             pool.submit(_process, path, store, settings, provider, schema, fingerprint,
-                        path.name in force)
+                        policy_version, path.name in force)
             for path in files
         ]
         for future in as_completed(futures):
@@ -55,22 +54,22 @@ def run_intake(files, store, settings, provider, schema, force=frozenset()):
     return outcomes
 
 
-def _process(path, store, settings, provider, schema, fingerprint, force):
+def _process(path, store, settings, provider, schema, fingerprint, policy_version, force):
     document_id = path.name
     raw = path.read_bytes()
     sha = hashlib.sha256(raw).hexdigest()
     current = store.load_current(document_id)
-    if decide(current, sha, fingerprint, settings.policy_version, force) == "reuse":
+    if decide(current, sha, fingerprint, policy_version, force) == "reuse":
         return document_id, "reused"
 
     with store.claim(document_id) as owned:
         if not owned:
             return document_id, "busy"
         current = store.load_current(document_id)
-        action = decide(current, sha, fingerprint, settings.policy_version, force)
+        action = decide(current, sha, fingerprint, policy_version, force)
         if action == "reuse":
             return document_id, "reused"
-        base = _base_record(document_id, sha, fingerprint, settings, provider)
+        base = _base_record(document_id, sha, fingerprint, policy_version, provider)
         if action == "reroute":
             record = _rerouted_record(base, current, raw)
             store.save_attempt(record)
@@ -79,7 +78,7 @@ def _process(path, store, settings, provider, schema, fingerprint, force):
         return document_id, "extracted"
 
 
-def _base_record(document_id, sha, fingerprint, settings, provider):
+def _base_record(document_id, sha, fingerprint, policy_version, provider):
     return {
         "document_id": document_id,
         "source_sha256": sha,
@@ -93,7 +92,7 @@ def _base_record(document_id, sha, fingerprint, settings, provider):
         "provider": provider.name,
         "model": provider.model,
         "settings_fingerprint": fingerprint,
-        "policy_version": settings.policy_version,
+        "policy_version": policy_version,
         "routing_signals": [],
         "rerouted_from_attempt": None,
         "last_valid": None,
@@ -103,10 +102,10 @@ def _base_record(document_id, sha, fingerprint, settings, provider):
 def _extract_record(record, raw, provider, schema):
     document_id = record["document_id"]
     try:
-        message = _read_message(raw)
+        message = read_message(raw)
         extraction = validate_reply(provider.extract(document_id, message), message, schema)
     except ExtractionError as exc:
-        return _failed(record, exc.code, exc.message)
+        return _failed(record, exc.code, redact(exc.message))
     except Exception as exc:  # provider or SDK failure of any kind
         return _failed(record, "provider-error", f"{type(exc).__name__}: {redact(str(exc))}")
     return _routed(record, extraction, message)
@@ -116,7 +115,7 @@ def _rerouted_record(record, current, raw):
     record["rerouted_from_attempt"] = current["attempt"]
     for key in ("provider", "model", "settings_fingerprint"):
         record[key] = current[key]
-    return _routed(record, current["extraction"], _read_message(raw))
+    return _routed(record, current["extraction"], read_message(raw))
 
 
 def _routed(record, extraction, message):
@@ -140,7 +139,7 @@ def _failed(record, code, message):
     return record
 
 
-def _read_message(raw):
+def read_message(raw):
     try:
         message = json.loads(raw.decode("utf-8"))["message"]
     except (UnicodeDecodeError, ValueError, KeyError, TypeError) as exc:
@@ -149,9 +148,3 @@ def _read_message(raw):
         raise ExtractionError("invalid-input", "The message field is not a string.")
     return message
 
-
-def redact(text):
-    """Remove API keys from text before it is stored or logged."""
-    text = re.sub(r"sk-ant-[A-Za-z0-9_\-]+", "[redacted]", text)
-    secret = os.environ.get("ANTHROPIC_API_KEY")
-    return text.replace(secret, "[redacted]") if secret else text

@@ -9,7 +9,7 @@
       "status": "review",
       "next_action": "review-request",
       "source_sha256": "102a69f8fbc3779ec19fb6c761ad34b0c9a001f845b8df3c808f5a79441fbb10",
-      "attempt": 1,
+      "attempt": 2,
       "routing_signals": [],
       "error": null,
       "last_valid": null
@@ -23,7 +23,7 @@
       "status": "review",
       "next_action": "review-risk-then-owner",
       "source_sha256": "007e47d1bd662d246e6d3656b6226b1c512ca4d38d71fc5844b9690ee29c14f6",
-      "attempt": 1,
+      "attempt": 2,
       "routing_signals": [],
       "error": null,
       "last_valid": null
@@ -37,7 +37,7 @@
       "status": "needs-information",
       "next_action": "clarify",
       "source_sha256": "80b64509cf82b29006492e97a2c53a165b9df7d22c78da10976a04594f829052",
-      "attempt": 1,
+      "attempt": 2,
       "routing_signals": [
         "missing:environment",
         "missing:permission",
@@ -56,7 +56,7 @@
       "status": "needs-information",
       "next_action": "clarify",
       "source_sha256": "d5de0f00c5c118e499ed27c6f779139b1b4c483158adf5fd2d86f513b1f9654e",
-      "attempt": 1,
+      "attempt": 2,
       "routing_signals": [
         "conflict:model-issue",
         "missing:environment"
@@ -73,7 +73,7 @@
       "status": "review",
       "next_action": "confirm-withdrawal",
       "source_sha256": "fb0f1d6451346e0d411204cb82375ae6f3be26e2791996d6adb5550d969c20f1",
-      "attempt": 1,
+      "attempt": 2,
       "routing_signals": [],
       "error": null,
       "last_valid": null
@@ -87,7 +87,7 @@
       "status": "review",
       "next_action": "inspect-message",
       "source_sha256": "d342c355bcf72b2d2c50e5fdf2696403bc245f5e7483722095e92b382a1991b2",
-      "attempt": 1,
+      "attempt": 2,
       "routing_signals": [
         "instruction-override:pattern-scan",
         "instruction-override:model-issue"
@@ -104,7 +104,7 @@
       "status": "review",
       "next_action": "review-risk-then-owner",
       "source_sha256": "dd4857323b83b418755981031c2798cd95c83703d09aa5457e3c8105afba646e",
-      "attempt": 1,
+      "attempt": 2,
       "routing_signals": [],
       "error": null,
       "last_valid": null
@@ -118,7 +118,7 @@
       "status": "review",
       "next_action": "review-request",
       "source_sha256": "b1e1de4bd67831115149cad2f1caba73f76d0c016bfcd75bdcdefdff8705a66f",
-      "attempt": 1,
+      "attempt": 2,
       "routing_signals": [],
       "error": null,
       "last_valid": null
@@ -132,7 +132,7 @@
       "status": "needs-information",
       "next_action": "clarify",
       "source_sha256": "8aa13b91d4d163827ed609b04c4cf40db2e66e4bbe33cd2211e22c1fa35378ad",
-      "attempt": 1,
+      "attempt": 2,
       "routing_signals": [
         "missing:manager"
       ],
@@ -148,7 +148,7 @@
       "status": "needs-information",
       "next_action": "clarify",
       "source_sha256": "8d40a28442575c92e012ea57356a5d39b5a5724dd8e85de65118bffbf269ea2d",
-      "attempt": 1,
+      "attempt": 2,
       "routing_signals": [
         "missing:end_date"
       ],
@@ -164,7 +164,7 @@
       "status": "needs-information",
       "next_action": "clarify",
       "source_sha256": "0776059292b21c7e12a3c5ecf3e81b3afa9743a4bd5e67e897da9bdd15bab345",
-      "attempt": 1,
+      "attempt": 2,
       "routing_signals": [
         "missing:start_date",
         "missing:end_date"
@@ -181,7 +181,7 @@
       "status": "review",
       "next_action": "review-risk-then-owner",
       "source_sha256": "192b72da5e74647b660d0e1226bb6a0f056fca4ec5ec53b278d7863fd397a791",
-      "attempt": 1,
+      "attempt": 2,
       "routing_signals": [],
       "error": null,
       "last_valid": null
@@ -195,7 +195,7 @@
       "status": "review",
       "next_action": "review-risk-then-owner",
       "source_sha256": "e477b1b1ecabb5f445dd80703e532a7ac11247220861a09f550f374dcdea240f",
-      "attempt": 1,
+      "attempt": 2,
       "routing_signals": [],
       "error": null,
       "last_valid": null
@@ -209,7 +209,7 @@
       "status": "needs-information",
       "next_action": "clarify",
       "source_sha256": "8f2ce7407f230ea93d334947f9fd577ef7656f5deb25c5d28b62e5930ce592a1",
-      "attempt": 1,
+      "attempt": 2,
       "routing_signals": [
         "start-after-end"
       ],
@@ -225,7 +225,7 @@
       "status": "review",
       "next_action": "review-request",
       "source_sha256": "a8beef34c01e19d3192a97d81b7a9b1a076703733d842b2eb50b002c6723cd2d",
-      "attempt": 1,
+      "attempt": 2,
       "routing_signals": [],
       "error": null,
       "last_valid": null
@@ -239,7 +239,7 @@
       "status": "needs-information",
       "next_action": "clarify",
       "source_sha256": "4c470e6fc498eba6b02efd4fcb9e4550b5e6229c608b20d7ceb2e529cd6282c2",
-      "attempt": 1,
+      "attempt": 2,
       "routing_signals": [
         "id-mismatch"
       ],
@@ -255,7 +255,7 @@
       "status": "needs-information",
       "next_action": "clarify",
       "source_sha256": "48c112b2079b488d1c8c52585526957f072df1d7985cf8a2d1a71624c7f08a15",
-      "attempt": 1,
+      "attempt": 2,
       "routing_signals": [
         "kind:other"
       ],
@@ -271,7 +271,7 @@
       "status": "review",
       "next_action": "review-request",
       "source_sha256": "0f4735183084c428b92ba37fc4247b8792222daff9395ab3feb94b866a8de1bd",
-      "attempt": 1,
+      "attempt": 2,
       "routing_signals": [],
       "error": null,
       "last_valid": null
@@ -285,7 +285,7 @@
       "status": "review",
       "next_action": "review-risk-then-owner",
       "source_sha256": "a2818ebed37c50392ff66143f0f4ecea0509b40a6d42edff4168770041d8e87d",
-      "attempt": 1,
+      "attempt": 2,
       "routing_signals": [],
       "error": null,
       "last_valid": null
@@ -299,7 +299,7 @@
       "status": "needs-information",
       "next_action": "clarify",
       "source_sha256": "05c79e5aeea9a964492143fe9e0731e7926ae987bd935482940ffde658a273ab",
-      "attempt": 1,
+      "attempt": 2,
       "routing_signals": [
         "conflict:model-issue",
         "missing:manager"

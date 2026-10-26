@@ -28,12 +28,12 @@
   "owner": "IT Service Desk",
   "next_action": "clarify",
   "error": null,
-  "attempt": 1,
-  "attempted_at": "2026-10-26T11:01:15+00:00",
+  "attempt": 2,
+  "attempted_at": "2026-10-26T11:07:01+00:00",
   "provider": "mock",
   "model": "mock",
-  "settings_fingerprint": "e5afb43ad9c56704d72e6fa04fbf0cb50915fef7b247c4e1665adae6da14feae",
-  "policy_version": "2026-10-22.1",
+  "settings_fingerprint": "f0a3b1eb9adcb2af9d538b3c2b748406043a749194046fb288e03005a88cfc05",
+  "policy_version": "rules-1+policy-b949596765ae",
   "routing_signals": [
     "missing:start_date",
     "missing:end_date"

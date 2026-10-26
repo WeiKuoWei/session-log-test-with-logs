@@ -1,0 +1,47 @@
+{
+  "document_id": "IT-017.json",
+  "source_sha256": "48c112b2079b488d1c8c52585526957f072df1d7985cf8a2d1a71624c7f08a15",
+  "extraction": {
+    "request_id": "IT-017",
+    "request_date": "2026-10-22",
+    "kind": "other",
+    "requester": "Chloe Martin",
+    "team": "Communications",
+    "system": null,
+    "environment": null,
+    "permission": null,
+    "business_purpose": null,
+    "start_date": null,
+    "end_date": null,
+    "manager": null,
+    "supporting_quotes": [
+      "IT-017 was submitted by Chloe Martin from Communications on 2026-10-22.",
+      "Where can we find the access request form?"
+    ],
+    "issues": [
+      "kind: the message asks where the access request form is and does not request access",
+      "system: not stated",
+      "environment: not stated",
+      "permission: not stated",
+      "start_date: not stated",
+      "end_date: not stated",
+      "manager: not stated",
+      "business_purpose: no access purpose is given"
+    ]
+  },
+  "status": "needs-information",
+  "owner": "IT Service Desk",
+  "next_action": "clarify",
+  "error": null,
+  "attempt": 2,
+  "attempted_at": "2026-10-26T11:07:01+00:00",
+  "provider": "mock",
+  "model": "mock",
+  "settings_fingerprint": "f0a3b1eb9adcb2af9d538b3c2b748406043a749194046fb288e03005a88cfc05",
+  "policy_version": "rules-1+policy-b949596765ae",
+  "routing_signals": [
+    "kind:other"
+  ],
+  "rerouted_from_attempt": null,
+  "last_valid": null
+}

@@ -1,0 +1,49 @@
+{
+  "document_id": "IT-003.json",
+  "source_sha256": "80b64509cf82b29006492e97a2c53a165b9df7d22c78da10976a04594f829052",
+  "extraction": {
+    "request_id": "IT-003",
+    "request_date": "2026-10-22",
+    "kind": "new",
+    "requester": "Lina Gomez",
+    "team": "Customer Success",
+    "system": "Beacon",
+    "environment": null,
+    "permission": null,
+    "business_purpose": "working on the customer renewal review next week",
+    "start_date": null,
+    "end_date": null,
+    "manager": "Priya Shah",
+    "supporting_quotes": [
+      "Lina Gomez from Customer Success",
+      "I need new access to Beacon",
+      "The same access Sam has",
+      "I didn't note what environment he was on or what the permission is named",
+      "My manager is Priya Shah"
+    ],
+    "issues": [
+      "environment: not stated; the requester did not note it",
+      "permission: not stated; the requester did not note it",
+      "start_date: no dates are given",
+      "end_date: no dates are given"
+    ]
+  },
+  "status": "needs-information",
+  "owner": "IT Service Desk",
+  "next_action": "clarify",
+  "error": null,
+  "attempt": 2,
+  "attempted_at": "2026-10-26T11:07:01+00:00",
+  "provider": "mock",
+  "model": "mock",
+  "settings_fingerprint": "f0a3b1eb9adcb2af9d538b3c2b748406043a749194046fb288e03005a88cfc05",
+  "policy_version": "rules-1+policy-b949596765ae",
+  "routing_signals": [
+    "missing:environment",
+    "missing:permission",
+    "missing:start_date",
+    "missing:end_date"
+  ],
+  "rerouted_from_attempt": null,
+  "last_valid": null
+}

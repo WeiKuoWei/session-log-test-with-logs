@@ -7,6 +7,11 @@ import re
 from dataclasses import dataclass
 from datetime import date
 
+# Bump when the routing logic below changes. Together with a hash of office-policy.md it forms
+# the policy version stored on every record; tests/test_routing_revision.py fails if this file
+# changes without a matching update.
+ROUTING_REVISION = 1
+
 SERVICE_DESK = "IT Service Desk"
 SECURITY = "Security Review"
 SYSTEM_OWNER = "System Owner"

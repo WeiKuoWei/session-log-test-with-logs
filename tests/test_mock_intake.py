@@ -1,23 +1,12 @@
 import json
-import shutil
 from collections import Counter
 
-import pytest
-
-from helpers import MATERIALS, REPO, expected_entry
+from helpers import REPO, expected_entry
 from intake.cli import main
-from intake.settings import Paths
 
 NAMES = [f"IT-{n:03d}.json" for n in range(1, 21)]
 FIELDS = ("request_id", "request_date", "kind", "requester", "team", "system", "environment",
           "permission", "start_date", "end_date", "manager")
-
-
-@pytest.fixture
-def workspace(tmp_path):
-    shutil.copytree(MATERIALS, tmp_path / "materials" / "requests")
-    shutil.copytree(REPO / "mock_replies", tmp_path / "mock_replies")
-    return Paths(root=tmp_path)
 
 
 def canned(name):

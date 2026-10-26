@@ -4,6 +4,5 @@
   "max_tokens": 1500,
   "workers": 4,
   "timeout_seconds": 60,
-  "max_retries": 2,
-  "policy_version": "2026-10-22.1"
+  "max_retries": 2
 }

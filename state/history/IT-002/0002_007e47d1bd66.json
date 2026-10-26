@@ -1,0 +1,37 @@
+{
+  "document_id": "IT-002.json",
+  "source_sha256": "007e47d1bd662d246e6d3656b6226b1c512ca4d38d71fc5844b9690ee29c14f6",
+  "extraction": {
+    "request_id": "IT-002",
+    "request_date": "2026-10-22",
+    "kind": "new",
+    "requester": "Owen Reed",
+    "team": "Payments",
+    "system": "Ledger",
+    "environment": "production",
+    "permission": "write",
+    "business_purpose": "We have several settlement entries associated with the wrong reconciliation batch",
+    "start_date": "2026-10-24",
+    "end_date": "2026-10-25",
+    "manager": "Elena Park",
+    "supporting_quotes": [
+      "Owen Reed in Payments requesting new write access to Ledger in production",
+      "Needed during 2026-10-24 and 2026-10-25",
+      "My manager is Elena Park"
+    ],
+    "issues": []
+  },
+  "status": "review",
+  "owner": "Security Review",
+  "next_action": "review-risk-then-owner",
+  "error": null,
+  "attempt": 2,
+  "attempted_at": "2026-10-26T11:07:01+00:00",
+  "provider": "mock",
+  "model": "mock",
+  "settings_fingerprint": "f0a3b1eb9adcb2af9d538b3c2b748406043a749194046fb288e03005a88cfc05",
+  "policy_version": "rules-1+policy-b949596765ae",
+  "routing_signals": [],
+  "rerouted_from_attempt": null,
+  "last_valid": null
+}
