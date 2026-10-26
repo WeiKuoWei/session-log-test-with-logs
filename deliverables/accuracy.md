@@ -5,7 +5,8 @@
 | Check | Result |
 |---|---|
 | 11 fields, exact string match, 21 documents | 229/231 |
-| business_purpose present and found in the message | 21/21 |
+| business_purpose present and found in the message | 19/19 |
+| business_purpose null where no purpose is expected | 2/2 |
 | supporting quotes not found in the message | 0 of 76 |
 | expected-null fields with no issue | 0 of 23 |
 | route matches | 21/21 |
@@ -46,7 +47,8 @@ Counts by class: wrong value 2.
 
 ## Other checks
 
-business_purpose: 21/21.
+business_purpose present and found in the message: 19/19.
+business_purpose null where no purpose is expected: 2/2.
 
 Supporting quotes not found in the message: 0 of 76.
 

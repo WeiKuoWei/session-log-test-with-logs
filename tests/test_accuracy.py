@@ -22,7 +22,8 @@ def edit_reply(workspace, name, **changes):
 def test_mock_accuracy_catches_exactly_the_two_injected_errors(workspace, capsys):
     summary, report = accuracy(workspace, capsys)
     assert "exact-match fields: 229/231" in summary
-    assert "business_purpose present and found in the message: 21/21" in summary
+    assert "business_purpose present and found in the message: 19/19" in summary
+    assert "business_purpose null where no purpose is expected: 2/2" in summary
     assert "supporting quotes not found in the message: 0 of 76" in summary
     assert "expected-null fields with no issue: 0 of 23" in summary
     assert "route matches: 21/21" in summary
@@ -75,8 +76,11 @@ def test_a_document_with_no_valid_extraction_counts_all_eleven_fields_as_mismatc
 def test_purpose_quotes_and_missing_issue_checks_each_fail_when_they_should(workspace, capsys):
     edit_reply(workspace, "IT-001.json", business_purpose="a purpose the message never states")
     edit_reply(workspace, "IT-010.json", issues=[])
+    edit_reply(workspace, "IT-017.json", business_purpose="Where can we find the access request form?")
     summary, report = accuracy(workspace, capsys)
-    assert "business_purpose present and found in the message: 20/21" in summary
+    assert "business_purpose present and found in the message: 18/19" in summary
+    assert "business_purpose null where no purpose is expected: 1/2" in summary
+    assert "- IT-017.json: expected null, got a purpose" in report
     assert "expected-null fields with no issue: 1 of 23" in summary
     assert "- IT-001.json: purpose is not found in the message" in report
     assert "- IT-010.json: end_date" in report

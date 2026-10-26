@@ -89,7 +89,17 @@ def _measure_purpose(docs):
             continue
         failures.append({"document": doc["name"], "expected": doc["expected"]["business_purpose"],
                          "got": got, "reason": reason})
-    return {"passed": len(docs) - len(failures), "total": len(docs), "failures": failures}
+    return {
+        "present": _purpose_tally(docs, failures, "present"),
+        "absent": _purpose_tally(docs, failures, "absent"),
+        "failures": failures,
+    }
+
+
+def _purpose_tally(docs, failures, expected):
+    total = sum(d["expected"]["business_purpose"] == expected for d in docs)
+    failed = sum(f["expected"] == expected for f in failures)
+    return {"passed": total - failed, "total": total}
 
 
 def _measure_quotes(docs):
@@ -142,7 +152,10 @@ def summary_lines(result):
     nulls, routes = result["null_fields"], result["routes"]
     return [
         f"exact-match fields: {exact['matched']}/{exact['total']}",
-        f"business_purpose present and found in the message: {purpose['passed']}/{purpose['total']}",
+        f"business_purpose present and found in the message: "
+        f"{purpose['present']['passed']}/{purpose['present']['total']}",
+        f"business_purpose null where no purpose is expected: "
+        f"{purpose['absent']['passed']}/{purpose['absent']['total']}",
         f"supporting quotes not found in the message: {len(quotes['not_in_message'])} of {quotes['total']}",
         f"expected-null fields with no issue: {len(nulls['without_issue'])} of {nulls['total']}",
         f"route matches: {routes['matched']}/{routes['total']}",
@@ -232,7 +245,11 @@ def _mismatch_section(result):
 def _other_checks_section(result):
     purpose, quotes = result["purpose"], result["quotes"]
     nulls, routes = result["null_fields"], result["routes"]
-    out = ["## Other checks", "", f"business_purpose: {purpose['passed']}/{purpose['total']}."]
+    out = ["## Other checks", "",
+           f"business_purpose present and found in the message: "
+           f"{purpose['present']['passed']}/{purpose['present']['total']}.",
+           f"business_purpose null where no purpose is expected: "
+           f"{purpose['absent']['passed']}/{purpose['absent']['total']}."]
     out += [f"- {f['document']}: {f['reason']}" for f in purpose["failures"]]
     out += ["", f"Supporting quotes not found in the message: {len(quotes['not_in_message'])} of {quotes['total']}."]
     out += [f"- {q['document']}: {q['quote']!r}" for q in quotes["not_in_message"]]

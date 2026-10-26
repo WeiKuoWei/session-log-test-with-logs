@@ -3,6 +3,8 @@ import json
 import threading
 from collections import Counter
 
+import pytest
+
 from helpers import (ScriptedProvider, all_good_replies, copy_request, extraction_for,
                      message_of, tool_reply)
 from intake.models import ExtractionError, ProviderReply
@@ -221,6 +223,36 @@ def test_resume_after_a_partial_run_processes_only_the_remainder(
     outcomes = run(inbox, store, settings, provider, schema)
     assert Counter(outcomes.values()) == {"reused": 3, "extracted": 3}
     assert sorted(provider.calls) == names
+
+
+def raise_interrupt():
+    raise KeyboardInterrupt
+
+
+def test_an_interrupted_run_keeps_finished_documents_and_a_rerun_does_only_the_rest(
+        inbox, store, settings, schema, paths):
+    names = [f"IT-{n:03d}.json" for n in range(1, 9)]
+    setup_docs(inbox, *names)
+    replies = all_good_replies(names)
+    replies["IT-004.json"] = raise_interrupt
+    one_worker = dataclasses.replace(settings, workers=1)      # documents run in file order
+    with pytest.raises(KeyboardInterrupt):
+        run(inbox, store, one_worker, ScriptedProvider(replies, delay=0.05), schema)
+
+    done = [n for n in names if current(store, n)]
+    assert done[:3] == names[:3] and "IT-004.json" not in done
+    for name in names:                       # no lock is left held, interrupted document included
+        with store.claim(name) as owned:
+            assert owned
+    queue = json.loads((paths.deliverables_dir / "queue.json").read_text())["entries"]
+    rows = (paths.deliverables_dir / "extractions.jsonl").read_text().splitlines()
+    assert [e["document_id"] for e in queue] == done == [json.loads(r)["document_id"] for r in rows]
+
+    rerun = ScriptedProvider(all_good_replies(names))
+    outcomes = run(inbox, store, settings, rerun, schema)
+    assert sorted(rerun.calls) == sorted(set(names) - set(done))
+    assert {n for n, a in outcomes.items() if a == "reused"} == set(done)
+    assert all(current(store, n)["attempt"] == 1 for n in names)
 
 
 def test_history_without_a_current_file_is_reprocessed(inbox, store, settings, schema):

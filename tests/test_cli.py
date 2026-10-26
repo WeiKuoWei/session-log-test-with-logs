@@ -1,13 +1,14 @@
+import dataclasses
 import json
 import shlex
 
 import pytest
 
 import intake.settings as settings_module
-from helpers import REPO
+from helpers import REPO, ScriptedProvider, extraction_for, tool_reply
 from intake.cli import main
 from intake.providers import RESPONSE_CASES
-from intake.settings import policy_version, retry_command
+from intake.settings import load_settings, policy_version, retry_command
 
 
 def run_mock(workspace, *args):
@@ -93,6 +94,24 @@ def test_the_printed_retry_command_works_word_for_word(workspace, capsys, monkey
     assert from_run.startswith(prefix)
     assert main(shlex.split(from_run[len(prefix):]), paths=workspace) == 0
     assert workspace_current(workspace, "IT-013.json")["status"] == "review"
+
+
+def test_ctrl_c_during_run_prints_how_to_continue_and_keeps_the_finished_documents(
+        workspace, capsys, monkeypatch):
+    names = [f"IT-{n:03d}.json" for n in range(1, 21)]
+    replies = {n: tool_reply(extraction_for(n)) for n in names}
+    replies["IT-004.json"] = lambda: (_ for _ in ()).throw(KeyboardInterrupt())
+    provider = ScriptedProvider(replies, delay=0.02)
+    monkeypatch.setattr("intake.cli.make_provider", lambda *args: provider)
+    monkeypatch.setattr("intake.cli.load_settings",
+                        lambda: dataclasses.replace(load_settings(), workers=1))
+    capsys.readouterr()
+    assert main(["run", "--provider", "mock"], paths=workspace) == 130
+    out = capsys.readouterr().out
+    assert "interrupted: " in out and "of 20 documents have a current result" in out
+    assert "rerun the same command" in out
+    queue = json.loads((workspace.deliverables_dir / "queue.json").read_text())["entries"]
+    assert [e["document_id"] for e in queue][:3] == names[:3] and queue
 
 
 def test_retry_command_names_the_provider_only_when_it_is_not_the_configured_one():

@@ -79,8 +79,14 @@ def _run(store, settings, paths, args, configured):
             raise SystemExit(f"Not found in {paths.input_dir}: {', '.join(sorted(unknown))}")
     source = "from --provider" if args.provider else "from config/settings.json"
     print(f"provider: {settings.provider} ({source}), model: {provider.model}, documents: {len(files)}")
-    outcomes = run_intake(files, store, settings, provider, schema, policy_version(paths),
-                          configured, force)
+    try:
+        outcomes = run_intake(files, store, settings, provider, schema, policy_version(paths),
+                              configured, force)
+    except KeyboardInterrupt:
+        finished = sum(1 for f in files if store.load_current(f.name))
+        print(f"interrupted: {finished} of {len(files)} documents have a current result; "
+              "rerun the same command to process the rest (finished documents are reused)")
+        return 130
     print("outcomes: " + ", ".join(f"{n} {a}" for a, n in sorted(Counter(outcomes.values()).items())))
     failed = [r for r in store.all_current() if r["status"] == "error"]
     for record in failed:
