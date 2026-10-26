@@ -1,0 +1,59 @@
+{
+  "cli_version": "0.10.0",
+  "checkpoint_id": "01M5VYNZ2T5GY3QAJNSVKXGT9G",
+  "session_id": "7081d214-0445-4ed9-966b-173cf5876e98",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-26T11:14:15.447059Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "intake/runner.py",
+    "intake/cli.py",
+    "tests/test_intake.py",
+    "tests/test_anthropic_provider.py",
+    "tests/test_cli.py",
+    "intake/store.py",
+    "intake/settings.py",
+    ".gitignore",
+    "intake/accuracy.py",
+    "tests/conftest.py",
+    "tests/test_accuracy.py"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-sonnet-5-5",
+  "turn_id": "7d1765c8820d",
+  "checkpoint_transcript_start": 700,
+  "transcript_lines_at_start": 700,
+  "compact_transcript_start": 137,
+  "token_usage": {
+    "input_tokens": 30,
+    "cache_creation_tokens": 45974,
+    "cache_read_tokens": 3352444,
+    "output_tokens": 31949,
+    "api_call_count": 15
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-26T11:14:15.166384Z",
+    "agent_lines": 519,
+    "agent_removed": 36,
+    "human_added": 213,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 732,
+    "total_lines_changed": 768,
+    "agent_percentage": 72.265625,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

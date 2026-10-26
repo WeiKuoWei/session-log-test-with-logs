@@ -1,0 +1,12 @@
+Checked: 96 passed. In a scratch copy of the repo I ran the operator flow myself: from empty state 20 extracted, rerun 20 reused; I set IT-013's mock reply to stop_reason refusal and ran retry, and status showed FAILED with the older attempt 1 named; changing IT-001's bytes gave a new attempt with the new hash, kept the old one, and the queue still had one entry. The paraphrase and its expected fields match its text.
+
+One bug: the retry command in the error record and in status is `python3 -m intake retry IT-013.json`, without `--provider mock`. For a mock run, running it word for word stops with "ANTHROPIC_API_KEY is not set". Build the retry command from the provider recorded on the failed attempt (add --provider when it isn't the configured one), and test that the printed command really works.
+
+Routing revision: keep your pin test, don't hash routing.py automatically. A comment edit would then create a new attempt for every document, 2,000 on a big morning, which only fills history. A test that fails loudly is enough.
+
+Next, step 5 part 1, the accuracy check:
+- An `accuracy` command that compares current extractions (20 docs + the paraphrase, kept out of the queue) with expected/expected_fields.json and writes deliverables/accuracy.md.
+- Rules as agreed: 11 fields by exact string match, null equals null, denominator 231; business_purpose on its own line (present when expected, found in the message); count quotes that aren't substrings and expected-null fields with no issue; list every mismatch as document / field / expected / got; route matches out of 21.
+- The file says the numbers come from mock replies only, names the 2 injected errors, and says there is no live observation.
+
+Run pytest and accuracy, show me the accuracy summary, commit.
