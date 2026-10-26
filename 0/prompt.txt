@@ -1,0 +1,29 @@
+I'm doing the week 1 challenge in this repo. Please read README.md, docs/requirements.md, materials/office-policy.md, snapshot.schema.json and the files in materials/requests/ before you answer.
+
+What I want built: a small Python CLI that sends each request message to an LLM, validates the reply, applies the 5 routing rules from the office policy in plain code (never by the model), and writes deliverables/extractions.jsonl and deliverables/queue.json, keeping older versions separately.
+
+My choices (push back if one is wrong):
+- Anthropic Messages API with one forced tool call whose input schema is snapshot.schema.json, so the output is structured and I can check stop_reason for refusals and cut-off replies. Default to a current Sonnet model: 200-2,000 short messages a day into a fixed schema needs reliable structured output more than Opus-level reasoning. Check the model id against the installed anthropic SDK's model list, and check whether its messages.create takes temperature before relying on it. Key read from the ANTHROPIC_API_KEY environment variable by name.
+- No API key here, so development and tests run on a mock provider with canned replies per message. 2 of the mock replies should be deliberately wrong (labelled), so the accuracy check can be seen catching errors.
+- No web UI, no database: a CLI plus JSON files is enough to start intake, look at the queue and resume, and easier for me to check.
+- jsonschema, pytest and anthropic are already installed for python3. Don't install anything and don't create a .venv. requirements.txt pins the versions that are installed now, as the lockfile.
+
+How I'll accept it:
+1. One intake command over the 20 files on the mock writes one extraction and one queue entry per file. My own count from the policy is 9 needs-information, 5 Security Review, 4 System Owner, 2 IT Service Desk review (IT-005, IT-006). IT-009 is needs-information because it names no manager.
+2. pytest covers: a complete request, missing dates, conflicting details, the embedded instruction in IT-006, a provider failure, an unchanged rerun, changed source content, a refusal / cut-off reply, and a failed retry after an earlier success.
+3. Expected fields for accuracy.md are written from the messages, never copied from or edited to match the mock replies. business_purpose is free text, so it's not exact-matched: 11 fields are exact-matched (21 docs x 11 = 231 with the paraphrase), and business_purpose is checked separately for being present and found in the message.
+
+Before any code: give me a plan and a project layout (files, CLI commands, where current vs history records live, how a rerun knows what to reuse, how you'd keep two operators from corrupting the queue, and how it resumes after a crash). No code and no commit yet.
+
+---
+
+Good plan, and your routing list matches mine. Answers:
+1. Yes to the two wrong mocks (IT-018 end_date 2026-10-27, IT-012 permission write). Label them in the mock files.
+2. Yes, document_id = "IT-001.json".
+3. Yes, business_purpose as a verbatim excerpt, checked as a whitespace-normalised substring.
+
+Two changes to your design:
+- Conflicts: routing on the null alone means a model that picks one value but notes the conflict in issues would send IT-004 to System Owner. Have the prompt start those issues with "conflict:" and let rule 3 also fire on that prefix. Same idea for overrides: keep your pattern scan, but also accept a model issue starting "instruction-override:", and record in the record which signal fired.
+- Commit as you go instead of stopping to report after each step.
+
+Now do your build steps 1 to 3 in this turn: the expected fields file first (from the messages), then routing, validation and the store with tests, then the mock provider with the 20 canned replies and the intake run over all 20. Commit after step 2 and again after step 3, each with a clear message. Then show me the pytest count and a document_id / owner / status / next_action table taken from deliverables/queue.json.
