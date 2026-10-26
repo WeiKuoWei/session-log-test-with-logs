@@ -1,0 +1,12 @@
+Checked: 68 passed for me. Before looking at your file I'd worked out the 11 non-free-text fields for all 20 messages myself, and all 220 agree with expected/expected_fields.json. All 20 source_sha256 match the file bytes, every quote is a substring of its message, and the expected file really was committed before the mocks.
+
+Two problems from using it as an operator:
+1. `python3 -m intake status` only prints "stale 20" (or "done 20" with the flag). An operator can't tell which documents are stale or failed or why. Please list each document that isn't done, with its reason (stale: which provider/settings made it; error: the code and the retry command). Also accept --provider after the subcommand, `status --provider mock` currently errors.
+2. policy_version is a string typed into config. If someone edits office-policy.md or routing.py and forgets to bump it, old routes stay in the queue. Derive it from the sha256 of office-policy.md plus a rules-revision constant in routing.py, so either change triggers a re-route.
+
+Then step 4:
+- The Anthropic provider, tested only with a fake client: refusal and max_tokens stop reasons, no tool call or two, malformed tool input, timeout, 429/5xx, connection error. Each becomes an error record (IT Service Desk / retry-extraction / null extraction) with its retry command, and the key never appears in an error text. A missing key fails before any document is touched.
+- deliverables/request-evidence.json: the exact request for one message (model id, max_tokens, tool, tool_choice), key redacted, plus how each response case is handled.
+- The `history <doc>` command you planned.
+
+Run pytest, show me the count, commit.
