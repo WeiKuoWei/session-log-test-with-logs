@@ -1,0 +1,29 @@
+{
+  "_label": "mock reply: canned, authored by hand from the message text",
+  "stop_reason": "tool_use",
+  "tool_inputs": [
+    {
+      "request_id": "IT-010",
+      "request_date": "2026-10-22",
+      "kind": "new",
+      "requester": "Ben Carter",
+      "team": "Operations",
+      "system": "Ledger",
+      "environment": "production",
+      "permission": "read",
+      "business_purpose": "compare the daily reconciliation report to the entries that the operations folks see",
+      "start_date": "2026-10-27",
+      "end_date": null,
+      "manager": "Elena Park",
+      "supporting_quotes": [
+        "I'm Ben Carter in Operations",
+        "read access to Ledger (production) starting 2026-10-27",
+        "My manager is Elena Park",
+        "Haven't quite fixed on the end date."
+      ],
+      "issues": [
+        "end_date: the requester has not decided on an end date"
+      ]
+    }
+  ]
+}

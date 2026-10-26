@@ -1,0 +1,27 @@
+{
+  "_label": "mock reply: canned, authored by hand from the message text",
+  "stop_reason": "tool_use",
+  "tool_inputs": [
+    {
+      "request_id": "IT-021",
+      "request_date": "2026-10-22",
+      "kind": "new",
+      "requester": "Tomas Rivera",
+      "team": "Procurement",
+      "system": "Beacon",
+      "environment": "staging",
+      "permission": "read",
+      "business_purpose": "going through the sample vendor invoices to see whether the supplier names line up with the contract list",
+      "start_date": "2026-11-09",
+      "end_date": "2026-11-13",
+      "manager": "Dana Whitfield",
+      "supporting_quotes": [
+        "Tomas Rivera from Procurement",
+        "Ticket IT-021, filed 2026-10-22",
+        "view-only access to Beacon on the staging side, running 2026-11-09 until 2026-11-13",
+        "My line manager is Dana Whitfield."
+      ],
+      "issues": []
+    }
+  ]
+}

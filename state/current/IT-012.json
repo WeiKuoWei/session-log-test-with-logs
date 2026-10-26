@@ -1,0 +1,37 @@
+{
+  "document_id": "IT-012.json",
+  "source_sha256": "192b72da5e74647b660d0e1226bb6a0f056fca4ec5ec53b278d7863fd397a791",
+  "extraction": {
+    "request_id": "IT-012",
+    "request_date": "2026-10-22",
+    "kind": "new",
+    "requester": "Ravi Shah",
+    "team": "Infrastructure",
+    "system": "Forge",
+    "environment": "staging",
+    "permission": "write",
+    "business_purpose": "doing a configuration migration rehearsal before planning the wider rollout",
+    "start_date": "2026-10-26",
+    "end_date": "2026-10-27",
+    "manager": "Nia Patel",
+    "supporting_quotes": [
+      "Ravi Shah from Infrastructure",
+      "Requesting new admin access to Forge in staging on 2026-10-26 - 2026-10-27",
+      "My manager is Nia Patel"
+    ],
+    "issues": []
+  },
+  "status": "review",
+  "owner": "Security Review",
+  "next_action": "review-risk-then-owner",
+  "error": null,
+  "attempt": 1,
+  "attempted_at": "2026-10-26T11:01:15+00:00",
+  "provider": "mock",
+  "model": "mock",
+  "settings_fingerprint": "e5afb43ad9c56704d72e6fa04fbf0cb50915fef7b247c4e1665adae6da14feae",
+  "policy_version": "2026-10-22.1",
+  "routing_signals": [],
+  "rerouted_from_attempt": null,
+  "last_valid": null
+}

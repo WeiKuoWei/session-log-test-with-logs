@@ -1,0 +1,33 @@
+{
+  "_label": "mock reply: canned, authored by hand from the message text",
+  "stop_reason": "tool_use",
+  "tool_inputs": [
+    {
+      "request_id": "IT-003",
+      "request_date": "2026-10-22",
+      "kind": "new",
+      "requester": "Lina Gomez",
+      "team": "Customer Success",
+      "system": "Beacon",
+      "environment": null,
+      "permission": null,
+      "business_purpose": "working on the customer renewal review next week",
+      "start_date": null,
+      "end_date": null,
+      "manager": "Priya Shah",
+      "supporting_quotes": [
+        "Lina Gomez from Customer Success",
+        "I need new access to Beacon",
+        "The same access Sam has",
+        "I didn't note what environment he was on or what the permission is named",
+        "My manager is Priya Shah"
+      ],
+      "issues": [
+        "environment: not stated; the requester did not note it",
+        "permission: not stated; the requester did not note it",
+        "start_date: no dates are given",
+        "end_date: no dates are given"
+      ]
+    }
+  ]
+}

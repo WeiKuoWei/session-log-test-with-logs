@@ -29,6 +29,10 @@ class Paths:
         return self.root / "deliverables"
 
     @property
+    def mock_replies_dir(self):
+        return self.root / "mock_replies"
+
+    @property
     def expected_file(self):
         return self.root / "expected" / "expected_fields.json"
 

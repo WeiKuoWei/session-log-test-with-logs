@@ -1,0 +1,29 @@
+{
+  "_label": "mock reply: canned, authored by hand from the message text",
+  "stop_reason": "tool_use",
+  "tool_inputs": [
+    {
+      "request_id": "IT-020",
+      "request_date": "2026-10-22",
+      "kind": "new",
+      "requester": "Ethan Clark",
+      "team": "Product",
+      "system": "Atlas",
+      "environment": "staging",
+      "permission": "read",
+      "business_purpose": "look at some sample usage records before I draft the summary on feature adoption",
+      "start_date": "2026-10-29",
+      "end_date": "2026-11-02",
+      "manager": null,
+      "supporting_quotes": [
+        "I'm Ethan Clark with Product",
+        "new Atlas read access to staging from 2026-10-29 to 2026-11-02",
+        "My manager is Priya Shah.",
+        "The manager for this request is Elena Park."
+      ],
+      "issues": [
+        "conflict: two different managers are named (Priya Shah and Elena Park) with no correction"
+      ]
+    }
+  ]
+}

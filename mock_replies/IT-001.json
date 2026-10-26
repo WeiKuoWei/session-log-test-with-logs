@@ -1,0 +1,26 @@
+{
+  "_label": "mock reply: canned, authored by hand from the message text",
+  "stop_reason": "tool_use",
+  "tool_inputs": [
+    {
+      "request_id": "IT-001",
+      "request_date": "2026-10-22",
+      "kind": "new",
+      "requester": "Maya Chen",
+      "team": "Analytics",
+      "system": "Atlas",
+      "environment": "staging",
+      "permission": "read",
+      "business_purpose": "checking the weekly conversion dashboard with the new event definition changes",
+      "start_date": "2026-10-23",
+      "end_date": "2026-11-06",
+      "manager": "Priya Shah",
+      "supporting_quotes": [
+        "request IT-001 dated 2026-10-22",
+        "new read access on Atlas in staging from 2026-10-23 to 2026-11-06",
+        "My manager is Priya Shah"
+      ],
+      "issues": []
+    }
+  ]
+}

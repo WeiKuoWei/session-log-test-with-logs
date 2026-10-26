@@ -1,0 +1,34 @@
+{
+  "_label": "mock reply: canned, authored by hand from the message text",
+  "stop_reason": "tool_use",
+  "tool_inputs": [
+    {
+      "request_id": "IT-005",
+      "request_date": "2026-10-22",
+      "kind": "withdrawal",
+      "requester": "Ava Brooks",
+      "team": "Design",
+      "system": null,
+      "environment": null,
+      "permission": null,
+      "business_purpose": null,
+      "start_date": null,
+      "end_date": null,
+      "manager": "Elena Park",
+      "supporting_quotes": [
+        "Could you please withdraw IT-005? Date: 2026-10-22",
+        "My name is Ava Brooks. Design.",
+        "My boss is Elena Park.",
+        "Please record the request as withdrawn"
+      ],
+      "issues": [
+        "system: not stated in the withdrawal",
+        "environment: not stated in the withdrawal",
+        "permission: not stated in the withdrawal",
+        "start_date: not stated in the withdrawal",
+        "end_date: not stated in the withdrawal",
+        "business_purpose: no access purpose is given, only the reason for withdrawing"
+      ]
+    }
+  ]
+}

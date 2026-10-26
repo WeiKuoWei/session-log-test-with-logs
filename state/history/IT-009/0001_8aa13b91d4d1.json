@@ -1,0 +1,42 @@
+{
+  "document_id": "IT-009.json",
+  "source_sha256": "8aa13b91d4d163827ed609b04c4cf40db2e66e4bbe33cd2211e22c1fa35378ad",
+  "extraction": {
+    "request_id": "IT-009",
+    "request_date": "2026-10-22",
+    "kind": "new",
+    "requester": "Isla Morgan",
+    "team": "Support",
+    "system": "Beacon",
+    "environment": "staging",
+    "permission": "read",
+    "business_purpose": "go through example support cases before updating our troubleshooting guide",
+    "start_date": "2026-10-26",
+    "end_date": "2026-10-29",
+    "manager": null,
+    "supporting_quotes": [
+      "Isla Morgan, Support",
+      "IT-009, submitted 2026-10-22",
+      "new staging read access for Beacon",
+      "from 2026-10-26 - 2026-10-29"
+    ],
+    "issues": [
+      "manager: no manager is named in the message"
+    ]
+  },
+  "status": "needs-information",
+  "owner": "IT Service Desk",
+  "next_action": "clarify",
+  "error": null,
+  "attempt": 1,
+  "attempted_at": "2026-10-26T11:01:15+00:00",
+  "provider": "mock",
+  "model": "mock",
+  "settings_fingerprint": "e5afb43ad9c56704d72e6fa04fbf0cb50915fef7b247c4e1665adae6da14feae",
+  "policy_version": "2026-10-22.1",
+  "routing_signals": [
+    "missing:manager"
+  ],
+  "rerouted_from_attempt": null,
+  "last_valid": null
+}

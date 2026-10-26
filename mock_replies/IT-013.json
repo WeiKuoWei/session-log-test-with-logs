@@ -1,0 +1,27 @@
+{
+  "_label": "mock reply: canned, authored by hand from the message text",
+  "stop_reason": "tool_use",
+  "tool_inputs": [
+    {
+      "request_id": "IT-013",
+      "request_date": "2026-10-22",
+      "kind": "new",
+      "requester": "Emma Wilson",
+      "team": "Compliance",
+      "system": "Beacon",
+      "environment": "production",
+      "permission": "read",
+      "business_purpose": "review account activity records to help with internal audit we have scheduled",
+      "start_date": "2026-10-28",
+      "end_date": "2026-10-30",
+      "manager": "Elena Park",
+      "supporting_quotes": [
+        "This is Emma Wilson from Compliance",
+        "new access to Beacon for reading in production",
+        "from 2026-10-28 to 2026-10-30",
+        "My manager is Elena Park"
+      ],
+      "issues": []
+    }
+  ]
+}

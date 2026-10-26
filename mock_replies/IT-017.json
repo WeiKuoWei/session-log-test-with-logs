@@ -1,0 +1,34 @@
+{
+  "_label": "mock reply: canned, authored by hand from the message text",
+  "stop_reason": "tool_use",
+  "tool_inputs": [
+    {
+      "request_id": "IT-017",
+      "request_date": "2026-10-22",
+      "kind": "other",
+      "requester": "Chloe Martin",
+      "team": "Communications",
+      "system": null,
+      "environment": null,
+      "permission": null,
+      "business_purpose": null,
+      "start_date": null,
+      "end_date": null,
+      "manager": null,
+      "supporting_quotes": [
+        "IT-017 was submitted by Chloe Martin from Communications on 2026-10-22.",
+        "Where can we find the access request form?"
+      ],
+      "issues": [
+        "kind: the message asks where the access request form is and does not request access",
+        "system: not stated",
+        "environment: not stated",
+        "permission: not stated",
+        "start_date: not stated",
+        "end_date: not stated",
+        "manager: not stated",
+        "business_purpose: no access purpose is given"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "_label": "mock reply: canned, authored by hand from the message text",
+  "stop_reason": "tool_use",
+  "tool_inputs": [
+    {
+      "request_id": "IT-009",
+      "request_date": "2026-10-22",
+      "kind": "new",
+      "requester": "Isla Morgan",
+      "team": "Support",
+      "system": "Beacon",
+      "environment": "staging",
+      "permission": "read",
+      "business_purpose": "go through example support cases before updating our troubleshooting guide",
+      "start_date": "2026-10-26",
+      "end_date": "2026-10-29",
+      "manager": null,
+      "supporting_quotes": [
+        "Isla Morgan, Support",
+        "IT-009, submitted 2026-10-22",
+        "new staging read access for Beacon",
+        "from 2026-10-26 - 2026-10-29"
+      ],
+      "issues": [
+        "manager: no manager is named in the message"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "document_id": "IT-004.json",
+  "source_sha256": "d5de0f00c5c118e499ed27c6f779139b1b4c483158adf5fd2d86f513b1f9654e",
+  "extraction": {
+    "request_id": "IT-004",
+    "request_date": "2026-10-22",
+    "kind": "new",
+    "requester": "Theo Malik",
+    "team": "Quality Engineering",
+    "system": "Atlas",
+    "environment": null,
+    "permission": "read",
+    "business_purpose": "understand why the nightly quality report shows different counts from the release checklist",
+    "start_date": "2026-10-23",
+    "end_date": "2026-10-30",
+    "manager": "Nia Patel",
+    "supporting_quotes": [
+      "Theo Malik, Quality Engineering",
+      "new read access in staging to Atlas from 2026-10-23 to 2026-10-30",
+      "This request is for the production environment",
+      "Nia Patel is my manager"
+    ],
+    "issues": [
+      "conflict: environment is staging in one sentence and production in another, with no correction"
+    ]
+  },
+  "status": "needs-information",
+  "owner": "IT Service Desk",
+  "next_action": "clarify",
+  "error": null,
+  "attempt": 1,
+  "attempted_at": "2026-10-26T11:01:15+00:00",
+  "provider": "mock",
+  "model": "mock",
+  "settings_fingerprint": "e5afb43ad9c56704d72e6fa04fbf0cb50915fef7b247c4e1665adae6da14feae",
+  "policy_version": "2026-10-22.1",
+  "routing_signals": [
+    "conflict:model-issue",
+    "missing:environment"
+  ],
+  "rerouted_from_attempt": null,
+  "last_valid": null
+}

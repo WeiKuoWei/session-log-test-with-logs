@@ -1,0 +1,28 @@
+{
+  "_label": "mock reply: canned, authored by hand from the message text",
+  "stop_reason": "tool_use",
+  "tool_inputs": [
+    {
+      "request_id": "IT-061",
+      "request_date": "2026-10-22",
+      "kind": "new",
+      "requester": "Alex Turner",
+      "team": "Platform",
+      "system": "Forge",
+      "environment": "staging",
+      "permission": "read",
+      "business_purpose": "looking at the example pipeline runs to figure out why the starter project takes longer to build some of the time",
+      "start_date": "2026-10-26",
+      "end_date": "2026-10-28",
+      "manager": "Nia Patel",
+      "supporting_quotes": [
+        "Alex Turner from Platform submitting request IT-061 for 2026-10-22",
+        "new read access to Forge (staging) for the dates 2026-10-26 through 2026-10-28",
+        "Nia Patel is my manager"
+      ],
+      "issues": [
+        "id-mismatch: the message states IT-061 but the file is IT-016"
+      ]
+    }
+  ]
+}

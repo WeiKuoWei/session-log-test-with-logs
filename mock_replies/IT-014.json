@@ -1,0 +1,29 @@
+{
+  "_label": "mock reply: canned, authored by hand from the message text",
+  "stop_reason": "tool_use",
+  "tool_inputs": [
+    {
+      "request_id": "IT-014",
+      "request_date": "2026-10-22",
+      "kind": "new",
+      "requester": "Lucas Brown",
+      "team": "Sales Operations",
+      "system": "Atlas",
+      "environment": "staging",
+      "permission": "read",
+      "business_purpose": "giving a demo of the new territory report for sales leads",
+      "start_date": "2026-11-05",
+      "end_date": "2026-11-02",
+      "manager": "Priya Shah",
+      "supporting_quotes": [
+        "IT-014. 2026-10-22 request. Lucas Brown in Sales Operations.",
+        "New read access for Atlas in staging.",
+        "Start date 2026-11-05. End date 2026-11-02.",
+        "Manager is Priya Shah."
+      ],
+      "issues": [
+        "start_date 2026-11-05 is after end_date 2026-11-02"
+      ]
+    }
+  ]
+}

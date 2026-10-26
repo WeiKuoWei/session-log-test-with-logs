@@ -1,0 +1,29 @@
+{
+  "_label": "mock reply: canned, authored by hand from the message text",
+  "stop_reason": "tool_use",
+  "tool_inputs": [
+    {
+      "request_id": "IT-015",
+      "request_date": "2026-10-22",
+      "kind": "new",
+      "requester": "Mia Davis",
+      "team": "Learning",
+      "system": "Beacon",
+      "environment": "staging",
+      "permission": "read",
+      "business_purpose": "make sure that the sample conversations in the examples I'm building match up to the exercise handout",
+      "start_date": "2026-10-29",
+      "end_date": "2026-10-31",
+      "manager": "Elena Park",
+      "supporting_quotes": [
+        "IT-015 2026-10-22. Mia Davis - Learning",
+        "new read access to Beacon in staging for the dates 2026-10-24 - 2026-10-26",
+        "Correction: substitute the access dates in the above with 2026-10-29 - 2026-10-31.",
+        "My manager is Elena Park."
+      ],
+      "issues": [
+        "start_date and end_date: the first dates were replaced by an explicit correction"
+      ]
+    }
+  ]
+}
