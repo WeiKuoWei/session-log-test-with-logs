@@ -55,7 +55,7 @@ Observed by removing the guarded code, running the test, restoring the code:
 | key redaction in the provider and runner | 3 tests red (HTTP 429, 5xx, other 4xx cases) |
 | deliverable render after an interrupted run | the interrupted-run test red |
 
-### Checks by the operator (Wei Kuo)
+### Checks by the operator (Trainee)
 
 Done by hand, outside the test suite:
 
@@ -65,17 +65,18 @@ Done by hand, outside the test suite:
 - `expected/expected_fields.json` was committed before the mock replies
 - in a scratch copy: 20 extracted from empty state, 20 reused on rerun; IT-013's mock reply set to refusal, then `retry` gave FAILED in `status` with attempt 1 named; changing IT-001's bytes gave a new attempt with the new hash, kept the old one, and left one queue entry; after the retry-command repair the printed command, run word for word with no key, recovered the document (20 done)
 - the paraphrase and its expected fields match its text
+- walked through `README.md` in a fresh scratch copy with the mock provider: `run` without a key stops with the clear missing-key message; with `--provider mock`, `run`, both `queue` filters (`--status needs-information` gave 9 rows; `--owner "Security Review"` gave IT-002, IT-007, IT-012, IT-013 and IT-019), `history`, `accuracy` (229/231, 19/19, 2/2), `evidence` and `status` all behaved as the README documents
 
 ## Repairs made in this session
 
 | Problem | Found by | Repair | Test |
 |---|---|---|---|
-| Conflicts routed on a null value alone; a model that picked one value but noted the conflict would reach System Owner. Override found only by pattern scan | Wei Kuo | Prompt requires issues to start with `conflict:` and `instruction-override:`; rule 3 also fires on `conflict:`; override accepts the pattern scan or the model issue; the signals that fired are stored in `routing_signals` | `tests/test_routing.py`, `tests/test_intake.py` (conflict and override cases) |
-| `status` printed only a count; `--provider` was rejected after the subcommand | Wei Kuo | `status` lists each document that is not done with a reason; `--provider` accepted before or after the subcommand | `tests/test_cli.py` |
-| Policy version was a string typed into the config; editing the policy or routing code without changing it left old routes in the queue | Wei Kuo | Version derived from the sha256 of `office-policy.md` plus `ROUTING_REVISION`; stored routes re-route without the model. `routing.py` is not hashed automatically (a comment edit would otherwise create a new attempt for every document); a pin test fails instead | `tests/test_cli.py`, `tests/test_routing_revision.py` |
-| Retry command omitted `--provider` for a mock run and failed with "ANTHROPIC_API_KEY is not set" | Wei Kuo | Command built from the provider recorded on the failed attempt; `--provider` added when it differs from the configured one; recomputed when printed | `tests/test_cli.py` (runs the printed command) |
-| Purpose line counted IT-005 and IT-017, where no purpose is expected, in "present and found" | Wei Kuo | Split into present and found (19/19) and null where absent (2/2) | `tests/test_accuracy.py` |
-| No test interrupted a run; the resume test only processed 3 documents first | Wei Kuo | Interrupted-run test added; Ctrl-C now prints how many documents finished and exits with code 130 instead of a traceback | `tests/test_intake.py`, `tests/test_cli.py` |
+| Conflicts routed on a null value alone; a model that picked one value but noted the conflict would reach System Owner. Override found only by pattern scan | Trainee | Prompt requires issues to start with `conflict:` and `instruction-override:`; rule 3 also fires on `conflict:`; override accepts the pattern scan or the model issue; the signals that fired are stored in `routing_signals` | `tests/test_routing.py`, `tests/test_intake.py` (conflict and override cases) |
+| `status` printed only a count; `--provider` was rejected after the subcommand | Trainee | `status` lists each document that is not done with a reason; `--provider` accepted before or after the subcommand | `tests/test_cli.py` |
+| Policy version was a string typed into the config; editing the policy or routing code without changing it left old routes in the queue | Trainee | Version derived from the sha256 of `office-policy.md` plus `ROUTING_REVISION`; stored routes re-route without the model. `routing.py` is not hashed automatically (a comment edit would otherwise create a new attempt for every document); a pin test fails instead | `tests/test_cli.py`, `tests/test_routing_revision.py` |
+| Retry command omitted `--provider` for a mock run and failed with "ANTHROPIC_API_KEY is not set" | Trainee | Command built from the provider recorded on the failed attempt; `--provider` added when it differs from the configured one; recomputed when printed | `tests/test_cli.py` (runs the printed command) |
+| Purpose line counted IT-005 and IT-017, where no purpose is expected, in "present and found" | Trainee | Split into present and found (19/19) and null where absent (2/2) | `tests/test_accuracy.py` |
+| No test interrupted a run; the resume test only processed 3 documents first | Trainee | Interrupted-run test added; Ctrl-C now prints how many documents finished and exits with code 130 instead of a traceback | `tests/test_intake.py`, `tests/test_cli.py` |
 
 Defects found and fixed by the coding agent during the build, all in its own tests or helpers: the test helper's default dates were not in the messages and the grounding check rejected them (helper now builds from the expected facts); two test assertions had wrong expected counts or wording and were corrected. No application defect was found this way.
 
@@ -95,5 +96,5 @@ Defects found and fixed by the coding agent during the build, all in its own tes
 
 | Who | Work |
 |---|---|
-| Claude Code (model `claude-sonnet-5-5`) | Wrote the code, tests, mock replies, `expected/expected_fields.json`, the paraphrase message, and these documents. Checked the model id and the missing `temperature` parameter against the installed SDK. Ran the tests and the mutation checks above |
-| Wei Kuo | Set the scope and acceptance checks. Chose the provider, model, output format and the file-based design (JSON files and a CLI, no web UI, no database). Decided what to leave out: web UI, database, live run, a real multi-process race. Set the IT-009 route (needs-information, no manager named) and the `business_purpose` rule (verbatim excerpt, whitespace-normalised substring) before any code. Caught the issues listed under repairs. Checked the 220 expected values, the hashes, the quotes and the operator flow in a scratch copy |
+| Claude Code (Sonnet) | Wrote the code, tests, mock replies, `expected/expected_fields.json`, the paraphrase message, and these documents. Checked the application's configured model id (`claude-sonnet-5-5`) and the missing `temperature` parameter against the installed SDK. Ran the tests and the mutation checks above |
+| Trainee | Set the scope and acceptance checks. Chose the provider, model, output format and the file-based design (JSON files and a CLI, no web UI, no database). Decided what to leave out: web UI, database, live run, a real multi-process race. Set the IT-009 route (needs-information, no manager named) and the `business_purpose` rule (verbatim excerpt, whitespace-normalised substring) before any code. Caught the issues listed under repairs. Checked the 220 expected values, the hashes, the quotes and the operator flow in a scratch copy |
